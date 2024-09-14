@@ -1,3 +1,4 @@
+using FitHub.Platform.Common;
 using FitHub.Platform.Workout.API;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Problem Details
 app.UseStatusCodePages();
+app.UseExceptionHandler(GlobalExceptionHandler.Configure);
 
 app.UseHttpsRedirection();
 
