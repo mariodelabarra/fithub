@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.9.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FitHub.Platform.Common.Repository\FitHub.Platform.Common.Repository.csproj" />
+    <ProjectReference Include="..\FitHub.Platform.Workout.Repository\FitHub.Platform.Workout.Repository.csproj" />
+    <ProjectReference Include="..\FitHub.Platform.Workout.Service\FitHub.Platform.Workout.Service.csproj" />
+  </ItemGroup>
+
+</Project>

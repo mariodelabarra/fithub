@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_common", "_common", "{85EDDB72-FFAC-431B-83D6-A8ABC5C1779F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workout", "Workout", "{8BACE66A-569E-40B7-B997-452B5D1572BB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.API", "src\FitHub.Platform.Workout.API\FitHub.Platform.Workout.API.csproj", "{CCD88CC4-083E-48A2-A7E1-7EDC01DC709E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9A469F5-9708-476F-870D-F9DE926387CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B0487829-2B64-4903-A1E6-7BC42B191098}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.Domain", "src\FitHub.Platform.Workout.Domain\FitHub.Platform.Workout.Domain.csproj", "{F079A960-6D2E-47E0-BFB1-8B64482D651B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.Repository", "src\FitHub.Platform.Workout.Repository\FitHub.Platform.Workout.Repository.csproj", "{780975A5-D8FD-46A9-AD1A-6009A02BE7B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Common.Repository", "src\FitHub.Platform.Common.Repository\FitHub.Platform.Common.Repository.csproj", "{DEC000D7-7F60-4EF7-80FA-C1F0ED781257}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.Service", "src\FitHub.Platform.Workout.Service\FitHub.Platform.Workout.Service.csproj", "{50411C23-D056-41ED-9389-8CF220675461}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Common.Domain", "src\FitHub.Platform.Common.Domain\FitHub.Platform.Common.Domain.csproj", "{6B784924-49F4-42E2-AC19-887BF5206F10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitHub.Platform.Common", "src\FitHub.Platform.Common\FitHub.Platform.Common.csproj", "{C1059837-0C86-4ABB-8356-228276986962}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCD88CC4-083E-48A2-A7E1-7EDC01DC709E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD88CC4-083E-48A2-A7E1-7EDC01DC709E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD88CC4-083E-48A2-A7E1-7EDC01DC709E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD88CC4-083E-48A2-A7E1-7EDC01DC709E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F079A960-6D2E-47E0-BFB1-8B64482D651B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F079A960-6D2E-47E0-BFB1-8B64482D651B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F079A960-6D2E-47E0-BFB1-8B64482D651B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F079A960-6D2E-47E0-BFB1-8B64482D651B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{780975A5-D8FD-46A9-AD1A-6009A02BE7B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{780975A5-D8FD-46A9-AD1A-6009A02BE7B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{780975A5-D8FD-46A9-AD1A-6009A02BE7B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{780975A5-D8FD-46A9-AD1A-6009A02BE7B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEC000D7-7F60-4EF7-80FA-C1F0ED781257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC000D7-7F60-4EF7-80FA-C1F0ED781257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC000D7-7F60-4EF7-80FA-C1F0ED781257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEC000D7-7F60-4EF7-80FA-C1F0ED781257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50411C23-D056-41ED-9389-8CF220675461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50411C23-D056-41ED-9389-8CF220675461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50411C23-D056-41ED-9389-8CF220675461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50411C23-D056-41ED-9389-8CF220675461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B784924-49F4-42E2-AC19-887BF5206F10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B784924-49F4-42E2-AC19-887BF5206F10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B784924-49F4-42E2-AC19-887BF5206F10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B784924-49F4-42E2-AC19-887BF5206F10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1059837-0C86-4ABB-8356-228276986962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1059837-0C86-4ABB-8356-228276986962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1059837-0C86-4ABB-8356-228276986962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1059837-0C86-4ABB-8356-228276986962}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CCD88CC4-083E-48A2-A7E1-7EDC01DC709E} = {A9A469F5-9708-476F-870D-F9DE926387CE}
+		{A9A469F5-9708-476F-870D-F9DE926387CE} = {8BACE66A-569E-40B7-B997-452B5D1572BB}
+		{B0487829-2B64-4903-A1E6-7BC42B191098} = {8BACE66A-569E-40B7-B997-452B5D1572BB}
+		{F079A960-6D2E-47E0-BFB1-8B64482D651B} = {A9A469F5-9708-476F-870D-F9DE926387CE}
+		{780975A5-D8FD-46A9-AD1A-6009A02BE7B1} = {A9A469F5-9708-476F-870D-F9DE926387CE}
+		{DEC000D7-7F60-4EF7-80FA-C1F0ED781257} = {85EDDB72-FFAC-431B-83D6-A8ABC5C1779F}
+		{50411C23-D056-41ED-9389-8CF220675461} = {A9A469F5-9708-476F-870D-F9DE926387CE}
+		{6B784924-49F4-42E2-AC19-887BF5206F10} = {85EDDB72-FFAC-431B-83D6-A8ABC5C1779F}
+		{C1059837-0C86-4ABB-8356-228276986962} = {85EDDB72-FFAC-431B-83D6-A8ABC5C1779F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3EFD86AA-DCD6-4E50-B964-050D1F371A05}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FitHub.Platform.Common.Repository\FitHub.Platform.Common.Repository.csproj" />
+    <ProjectReference Include="..\FitHub.Platform.Workout.Domain\FitHub.Platform.Workout.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
