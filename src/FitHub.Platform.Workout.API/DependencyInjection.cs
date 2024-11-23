@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using FitHub.Platform.Common.Repository;
+using FitHub.Platform.Common.Service;
+using FitHub.Platform.Workout.Domain;
 using FitHub.Platform.Workout.Repository;
 using FitHub.Platform.Workout.Service;
 using FitHub.Platform.Workout.Service.Mapping;
+using FluentValidation;
 
 namespace FitHub.Platform.Workout.API
 {
@@ -22,6 +25,10 @@ namespace FitHub.Platform.Workout.API
 
             // Problem Details
             services.AddProblemDetails();
+
+            // FluentValidation
+            services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+            services.AddValidatorsFromAssemblyContaining<CreateExerciseInValidator>();
         }
 
         public static void RegisterServices(this IServiceCollection services)
@@ -39,6 +46,7 @@ namespace FitHub.Platform.Workout.API
             services.AddScoped<IExerciseService, ExerciseService>();
 
             //Validators
+            services.AddTransient<IValidatorService, ValidatorService>();
         }
 
         public static void RegisterRepositories(IServiceCollection services)

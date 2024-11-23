@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FitHub.Platform.Common.Exceptions;
+using FitHub.Platform.Common.Service;
 using FitHub.Platform.Workout.Domain;
 using FitHub.Platform.Workout.Repository;
 
@@ -17,12 +18,14 @@ namespace FitHub.Platform.Workout.Service
         private readonly IExerciseRepository _exerciseRepository;
 
         private readonly IMapper _mapper;
+        private readonly IValidatorService _validatorService;
 
-        public ExerciseService(IExerciseRepository exerciseRepository, IMapper mapper)
+        public ExerciseService(IExerciseRepository exerciseRepository, IMapper mapper, IValidatorService validatorService)
         {
             _exerciseRepository = exerciseRepository;
 
             _mapper = mapper;
+            _validatorService = validatorService;
         }
 
         public async Task<IEnumerable<Exercise>> GetAllAsync()
@@ -44,8 +47,7 @@ namespace FitHub.Platform.Workout.Service
 
         public async Task Create(CreateExerciseIn createExerciseIn)
         {
-            //var createTaskInValidator = new CreateTaskInValidator();
-            //createTaskInValidator.Validate(createTaskIn);
+            await _validatorService.ValidateAndThrow(createExerciseIn);
 
             var exercise = _mapper.Map<Exercise>(createExerciseIn);
 

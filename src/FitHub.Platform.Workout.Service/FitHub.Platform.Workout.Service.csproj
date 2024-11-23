@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FitHub.Platform.Common.Service\FitHub.Platform.Common.Service.csproj" />
     <ProjectReference Include="..\FitHub.Platform.Common\FitHub.Platform.Common.csproj" />
     <ProjectReference Include="..\FitHub.Platform.Workout.Repository\FitHub.Platform.Workout.Repository.csproj" />
   </ItemGroup>

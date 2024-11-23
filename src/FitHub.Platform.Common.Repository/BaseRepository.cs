@@ -5,7 +5,7 @@ namespace FitHub.Platform.Common.Repository
 {
     public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        Task<TEntity> GetByIdAsync(string id);
+        Task<TEntity?> GetByIdAsync(string id);
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
@@ -21,7 +21,7 @@ namespace FitHub.Platform.Common.Repository
             return await DB.Find<TEntity>().ExecuteAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(string id)
+        public async Task<TEntity?> GetByIdAsync(string id)
         {
             return await DB.Find<TEntity>().OneAsync(id);
         }
