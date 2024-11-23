@@ -11,6 +11,7 @@ namespace FitHub.Platform.Workout.Service
         Task<IEnumerable<Exercise>> GetAllAsync();
         Task<Exercise> GetById(string exerciseId);
         Task Create(CreateExerciseIn createExerciseIn);
+        Task Delete(string exerciseId);
     }
 
     public class ExerciseService : IExerciseService
@@ -52,6 +53,13 @@ namespace FitHub.Platform.Workout.Service
             var exercise = _mapper.Map<Exercise>(createExerciseIn);
 
             await _exerciseRepository.AddAsync(exercise);
+        }
+
+        public async Task Delete(string exerciseId)
+        {
+            _ = await GetById(exerciseId);
+
+            await _exerciseRepository.DeleteAsync(exerciseId);
         }
     }
 }

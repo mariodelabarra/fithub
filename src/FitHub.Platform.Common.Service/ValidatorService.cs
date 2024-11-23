@@ -49,7 +49,7 @@ namespace FitHub.Platform.Common.Service
             where TValidatorEntity : class, new()
         {
             Type genericType = typeof(IValidator<>).MakeGenericType(typeof(TValidatorEntity));
-            IValidator<TValidatorEntity> validator = (IValidator<TValidatorEntity>)_serviceProvider.GetService(genericType);
+            IValidator<TValidatorEntity> validator = (IValidator<TValidatorEntity>)_serviceProvider.GetService(genericType)!;
 
             if (validator is null)
             {

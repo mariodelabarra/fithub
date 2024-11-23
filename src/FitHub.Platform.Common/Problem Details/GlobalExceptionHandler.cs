@@ -35,6 +35,16 @@ namespace FitHub.Platform.Common
 
                         break;
 
+                    case NotFoundException:
+                        problemResult = Results.Problem(new ProblemDetails
+                        {
+                            Type = "https://httpstatuses.com/404",
+                            Title = exceptionHandlerPathFeature!.Error.Message,
+                            Detail = exceptionHandlerPathFeature!.Error.StackTrace,
+                            Status = StatusCodes.Status404NotFound
+                        });
+                        break;
+
                     // If no custom exception is matched, return generic 500 Internal Server
                     // error response
                     default:
@@ -43,11 +53,12 @@ namespace FitHub.Platform.Common
                             {
                                 Type = "https://httpstatuses.com/500",
                                 Title = "An error occurred while processing your request.",
-                                Status = StatusCodes.Status500InternalServerError
+                                Detail = string.Format("{0}: {1}", exceptionHandlerPathFeature!.Error.Message, exceptionHandlerPathFeature?.Error.StackTrace),
+                                Status = StatusCodes.Status500InternalServerError,
                             };
 
-                        problemResult = Results.Problem(details);
-                        break;
+                            problemResult = Results.Problem(details);
+                            break;
                         }
                 }
 
