@@ -1,4 +1,5 @@
 ﻿using FitHub.Platform.Common.Domain;
+using MongoDB.Driver;
 using MongoDB.Entities;
 
 namespace FitHub.Platform.Common.Repository
@@ -18,7 +19,8 @@ namespace FitHub.Platform.Common.Repository
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await DB.Find<TEntity>().ExecuteAsync();
+            //return await DB.Find<TEntity>().ExecuteAsync();
+            return DB.Collection<TEntity>().AsQueryable();
         }
 
         public async Task<TEntity?> GetByIdAsync(string id)

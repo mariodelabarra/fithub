@@ -1,12 +1,14 @@
 ﻿using FitHub.Platform.Workout.Domain;
 using FitHub.Platform.Workout.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using MongoDB.AspNetCore.OData;
 
 namespace FitHub.Platform.Workout.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExerciseController : ControllerBase
+    public class ExerciseController : ODataController
     {
         private readonly IExerciseService _exerciseService;
 
@@ -15,12 +17,13 @@ namespace FitHub.Platform.Workout.API.Controllers
             _exerciseService = exerciseService;
         }
 
-        [HttpGet()]
+        [HttpGet]
+        [MongoEnableQuery]
         public async Task<IActionResult> GetAll()
         {
             var exercises = await _exerciseService.GetAllAsync();
 
-            return Ok(exercises);
+            return Ok(exercises.AsQueryable());
         }
 
         [HttpGet("{exerciseId}")]
