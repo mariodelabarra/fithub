@@ -42,6 +42,9 @@ namespace FitHub.Platform.Workout.API.Controllers
             return Ok("Exercise created successfully!");
         }
 
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Update(string id, [FromBody] )
+
         [HttpDelete("{exerciseId}")]
         public async Task<IActionResult> Delete(string exerciseId)
         {

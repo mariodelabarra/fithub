@@ -52,7 +52,7 @@ namespace FitHub.Platform.Workout.Service
 
             var exercise = _mapper.Map<Exercise>(createExerciseIn);
 
-            await _exerciseRepository.AddAsync(exercise);
+            await _exerciseRepository.InsertAsync(exercise);
         }
 
         public async Task Delete(string exerciseId)

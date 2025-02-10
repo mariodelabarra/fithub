@@ -34,8 +34,8 @@ namespace FitHub.Platform.Workout.API
                         modelBuilder.GetEdmModel());
                 });
 
-            // MongoDB config
-            MongoDbContext.Initialize("fithubworkout", configuration.GetConnectionString("MongoDbConnection")!).Wait();
+            //MySql Connection
+            services.AddScoped<IExerciseRepository>(provider => new ExerciseRepository(configuration));
 
             // Problem Details
             services.AddProblemDetails();
@@ -68,6 +68,7 @@ namespace FitHub.Platform.Workout.API
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
+            DapperTypeHandlerInitializer.RegisterHandlers();
         }
     }
 }
