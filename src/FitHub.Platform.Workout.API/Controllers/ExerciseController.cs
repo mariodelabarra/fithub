@@ -2,7 +2,6 @@
 using FitHub.Platform.Workout.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using MongoDB.AspNetCore.OData;
 
 namespace FitHub.Platform.Workout.API.Controllers
 {
@@ -18,7 +17,6 @@ namespace FitHub.Platform.Workout.API.Controllers
         }
 
         [HttpGet]
-        [MongoEnableQuery]
         public async Task<IActionResult> GetAll()
         {
             var exercises = await _exerciseService.GetAllAsync();

@@ -1,8 +1,8 @@
-﻿using FitHub.Platform.Common.Domain;
-using System.Data;
-using MySql.Data.MySqlClient;
-using Dapper;
+﻿using Dapper;
+using FitHub.Platform.Common.Domain;
 using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace FitHub.Platform.Common.Repository
 {
@@ -77,8 +77,8 @@ namespace FitHub.Platform.Common.Repository
             using var connection = Connection;
             connection.Open();
 
-            var query = $@"INSERT INTO {typeof(TEntity).Name}s {string.Join(",", GetProperties<TEntity>().Select(prop => $"{prop} = @{prop}"))}
-                            WHERE Id = @Id";
+            var query = $@"INSERT INTO {typeof(TEntity).Name}s ({string.Join(",", GetProperties(entity).Select(prop => $"{prop}"))})
+                            VALUES ({string.Join(",", GetProperties(entity).Select(prop => $"@{prop}"))})";
 
             return await connection.ExecuteAsync(query, entity);
         }
@@ -97,16 +97,23 @@ namespace FitHub.Platform.Common.Repository
             using var connection = Connection;
             connection.Open();
 
-            var query = $@"UPDATE {typeof(TEntity).Name}s SET {string.Join(", ", GetProperties<TEntity>().Select(prop => $"{prop} = @{prop}"))}
+            var query = $@"UPDATE {typeof(TEntity).Name}s SET {string.Join(", ", GetProperties(entity).Select(prop => $"{prop} = @{prop}"))}
                         WHERE Id = @Id";
 
             return await connection.ExecuteAsync(query, entity);
         }
 
         // Helper method to get the property names of the entity
-        private static IEnumerable<string> GetProperties<T>()
+        private static IEnumerable<string> GetProperties(TEntity entity)
         {
-            return typeof(T).GetProperties().Select(p => p.Name);
+            return typeof(TEntity).GetProperties()
+                .Where(p =>
+                {
+                    var value = p.GetValue(entity);
+                    var defaultValue = p.PropertyType.IsValueType ? Activator.CreateInstance(p.PropertyType) : null;
+                    return value is not null && !value.Equals(defaultValue);
+                })
+                .Select(p => p.Name);
         }
     }
 }
