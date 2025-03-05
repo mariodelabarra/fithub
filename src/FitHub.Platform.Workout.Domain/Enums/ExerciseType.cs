@@ -2,6 +2,7 @@
 {
     public enum ExerciseType
     {
+        None,
         Cardio,
         Strength,
         Flexibility,
