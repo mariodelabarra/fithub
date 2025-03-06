@@ -9,9 +9,10 @@ namespace FitHub.Platform.Workout.Service
     public interface IExerciseService
     {
         Task<IEnumerable<Exercise>> GetAllAsync();
-        Task<Exercise> GetById(string exerciseId);
+        Task<Exercise> GetById(int id);
         Task Create(CreateExerciseIn createExerciseIn);
-        Task Delete(string exerciseId);
+        Task<bool> Update(int id, UpdateExerciseIn updateExerciseIn);
+        Task Delete(int id);
     }
 
     public class ExerciseService : IExerciseService
@@ -34,13 +35,13 @@ namespace FitHub.Platform.Workout.Service
             return await _exerciseRepository.GetAllAsync();
         }
 
-        public async Task<Exercise> GetById(string exerciseId)
+        public async Task<Exercise> GetById(int id)
         {
-            var exercise = await _exerciseRepository.GetByIdAsync(exerciseId);
+            var exercise = await _exerciseRepository.GetByIdAsync(id);
             
             if(exercise is null)
             {
-                throw new NotFoundException(exerciseId);
+                throw new NotFoundException(id.ToString());
             }
             
             return exercise;
@@ -55,11 +56,24 @@ namespace FitHub.Platform.Workout.Service
             await _exerciseRepository.InsertAsync(exercise);
         }
 
-        public async Task Delete(string exerciseId)
+        public async Task<bool> Update(int id, UpdateExerciseIn updateExerciseIn)
         {
-            _ = await GetById(exerciseId);
+            await _validatorService.ValidateAndThrow(updateExerciseIn);
 
-            await _exerciseRepository.DeleteAsync(exerciseId);
+            var exercise = await GetById(id);
+
+            _mapper.Map(updateExerciseIn, exercise);
+
+            var success = await _exerciseRepository.UpdateAsync(exercise);
+
+            return success > 0;
+        }
+
+        public async Task Delete(int id)
+        {
+            _ = await GetById(id);
+
+            await _exerciseRepository.DeleteAsync(id);
         }
     }
 }

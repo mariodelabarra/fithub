@@ -8,6 +8,7 @@ namespace FitHub.Platform.Workout.Service.Mapping
         public WorkoutProfile()
         {
             CreateMap<CreateExerciseIn, Exercise>();
+            CreateMap<UpdateExerciseIn, Exercise>();
             // Use CreateMap... Etc.. here (Profile methods are the same as configuration methods)
         }
     }

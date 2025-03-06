@@ -13,7 +13,7 @@ namespace FitHub.Platform.Common.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<TEntity?> GetByIdAsync(string id);
+        Task<TEntity?> GetByIdAsync(int id);
 
         /// <summary>
         /// Retrieves all records of the specified type
@@ -40,12 +40,11 @@ namespace FitHub.Platform.Common.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns>The number of rows affected</returns>
-        Task<int> DeleteAsync(string id);
+        Task<int> DeleteAsync(int id);
     }
 
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly string _connectionString;
         private readonly IConfiguration _configuration;
         private MySqlConnection Connection => new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         
@@ -63,7 +62,7 @@ namespace FitHub.Platform.Common.Repository
             return await connection.QueryAsync<TEntity>(query);
         }
 
-        public async Task<TEntity?> GetByIdAsync(string id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
             using var connection = Connection;
             connection.Open();
@@ -83,7 +82,7 @@ namespace FitHub.Platform.Common.Repository
             return await connection.ExecuteAsync(query, entity);
         }
 
-        public async Task<int> DeleteAsync(string id)
+        public async Task<int> DeleteAsync(int id)
         {
             using var connection = Connection;
             connection.Open();

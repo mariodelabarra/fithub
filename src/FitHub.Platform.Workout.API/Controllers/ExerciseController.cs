@@ -24,10 +24,10 @@ namespace FitHub.Platform.Workout.API.Controllers
             return Ok(exercises.AsQueryable());
         }
 
-        [HttpGet("{exerciseId}")]
-        public async Task<IActionResult> GetById(string exerciseId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var exercise = await _exerciseService.GetById(exerciseId);
+            var exercise = await _exerciseService.GetById(id);
 
             return Ok(exercise);
         }
@@ -40,13 +40,26 @@ namespace FitHub.Platform.Workout.API.Controllers
             return Ok("Exercise created successfully!");
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateExerciseIn updateExerciseIn)
+        {
+            var success = await _exerciseService.Update(id, updateExerciseIn);
+
+            if(!success)
+            {
+                return NotFound("Exercise not found!");
+            }
+
+            return NoContent();
+        }
+
         //[HttpPut("{id}")]
         //public async Task<IActionResult> Update(string id, [FromBody] )
 
         [HttpDelete("{exerciseId}")]
-        public async Task<IActionResult> Delete(string exerciseId)
+        public async Task<IActionResult> Delete(int id)
         {
-            await _exerciseService.Delete(exerciseId);
+            await _exerciseService.Delete(id);
 
             return Ok("Exercise deleted successfully!");
         }
