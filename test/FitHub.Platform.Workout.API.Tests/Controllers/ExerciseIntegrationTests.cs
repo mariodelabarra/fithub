@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FitHub.Platform.Workout.API;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 
 namespace FitHub.Platform.Workout.API.Tests.Controllers
@@ -22,6 +16,8 @@ namespace FitHub.Platform.Workout.API.Tests.Controllers
         [Fact]
         public async Task Get_Exercises_ReturnsOk()
         {
+            //Arrange
+
             //Act
             var response = await _client.GetAsync("/api/exercise");
 

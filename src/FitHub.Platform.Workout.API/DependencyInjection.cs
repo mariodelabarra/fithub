@@ -6,6 +6,8 @@ using FitHub.Platform.Workout.Repository;
 using FitHub.Platform.Workout.Service;
 using FitHub.Platform.Workout.Service.Mapping;
 using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
 
@@ -26,7 +28,8 @@ namespace FitHub.Platform.Workout.API
             // Add services to the container.
             var modelBuilder = new ODataConventionModelBuilder();
             modelBuilder.EntitySet<Exercise>("exercises").EntityType.HasKey(c => c.ID);
-            services.AddControllers().AddOData(
+            services.AddControllers()
+                .AddOData(
                 opt =>
                 {
                     opt.Select().Filter().OrderBy().Expand().Count().SetMaxTop(1000).AddRouteComponents(
@@ -43,6 +46,12 @@ namespace FitHub.Platform.Workout.API
             // FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
             services.AddValidatorsFromAssemblyContaining<CreateExerciseInValidator>();
+            services.AddFluentValidationAutoValidation();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         public static void RegisterServices(this IServiceCollection services)

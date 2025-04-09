@@ -1,69 +1,33 @@
-﻿using FitHub.Platform.Common.Exceptions;
-using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitHub.Platform.Common
 {
-    public class GlobalExceptionHandler
+    public class GlobalExceptionHandler : IExceptionHandler
     {
-        public static void Configure(IApplicationBuilder builder)
+        public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
         {
-            builder.Run(async context =>
+            int status = exception switch
             {
-                var exceptionHandlerPathFeature = 
-                    context.Features.Get<IExceptionHandlerPathFeature>();
+                ArgumentException => StatusCodes.Status400BadRequest,
+                ValidationException => StatusCodes.Status422UnprocessableEntity,
+                _ => StatusCodes.Status500InternalServerError
+            };
+            context.Response.StatusCode = status;
 
-                // Declare the problem results
-                IResult problemResult;
+            var problemDetails = new ProblemDetails
+            {
+                Status = status,
+                Title = "An error occurred",
+                Type = exception.GetType().Name,
+                Detail = exception.Message
+            };
 
-                // Switch statement to match the custom exceptions
-                switch (exceptionHandlerPathFeature?.Error)
-                {
-                    // This custom exception here contains validation errors from
-                    // Fluent Validation
-                    case ValidationRuleException:
-                        var exp = (ValidationRuleException)exceptionHandlerPathFeature!.Error;
+            await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-                        problemResult = Results.ValidationProblem
-                        (
-                            exp.Errors,
-                            type: "https://httpstatuses.com/422",
-                            statusCode: StatusCodes.Status422UnprocessableEntity
-                        );
-
-                        break;
-
-                    case NotFoundException:
-                        problemResult = Results.Problem(new ProblemDetails
-                        {
-                            Type = "https://httpstatuses.com/404",
-                            Title = exceptionHandlerPathFeature!.Error.Message,
-                            Detail = exceptionHandlerPathFeature!.Error.StackTrace,
-                            Status = StatusCodes.Status404NotFound
-                        });
-                        break;
-
-                    // If no custom exception is matched, return generic 500 Internal Server
-                    // error response
-                    default:
-                        {
-                            var details = new ProblemDetails
-                            {
-                                Type = "https://httpstatuses.com/500",
-                                Title = "An error occurred while processing your request.",
-                                Detail = string.Format("{0}: {1}", exceptionHandlerPathFeature!.Error.Message, exceptionHandlerPathFeature?.Error.StackTrace),
-                                Status = StatusCodes.Status500InternalServerError,
-                            };
-
-                            problemResult = Results.Problem(details);
-                            break;
-                        }
-                }
-
-                await problemResult.ExecuteAsync(context);
-            });
+            return true;
         }
     }
 }

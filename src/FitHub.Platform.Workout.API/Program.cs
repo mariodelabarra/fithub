@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 DependencyInjection.ConfigureDependencies(builder.Services, builder.Configuration);
 
 var app = builder.Build();
@@ -19,8 +21,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // Problem Details
+app.UseExceptionHandler();
 app.UseStatusCodePages();
-app.UseExceptionHandler(GlobalExceptionHandler.Configure);
 
 app.UseHttpsRedirection();
 
