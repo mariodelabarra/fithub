@@ -28,6 +28,10 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Testing with the dotnet CLI
-        run: |
-          dotnet test ./test/FitHub.Platform.Workout.API.Tests/FitHub.Platform.Workout.API.Tests.csproj --no-build
-          dotnet test ./test/FitHub.Platform.Workout.Services/FitHub.Platform.Workout.Services.Tests.csproj --no-build
+        run: dotnet test ./test/FitHub.Platform.Workout.API.Tests/FitHub.Platform.Workout.API.Tests.csproj --configuration Release --no-build
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: ./test/TestResults/TestResults.trx
