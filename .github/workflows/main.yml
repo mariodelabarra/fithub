@@ -29,5 +29,5 @@ jobs:
 
       - name: Testing with the dotnet CLI
         run: |
-          dotnet test ./test/Fithub.Platform.Workout.API.Tests/Fithub.Platform.Workout.API.Tests.csproj --no-build
-          dotnet test ./test/Fithub.Platform.Workout.Services/Fithub.Platform.Workout.Services.Tests.csproj --no-build
+          dotnet test ./test/FitHub.Platform.Workout.API.Tests/FitHub.Platform.Workout.API.Tests.csproj --no-build
+          dotnet test ./test/FitHub.Platform.Workout.Services/FitHub.Platform.Workout.Services.Tests.csproj --no-build
