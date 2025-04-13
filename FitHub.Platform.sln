@@ -27,13 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Common", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Common.Service", "src\FitHub.Platform.Common.Service\FitHub.Platform.Common.Service.csproj", "{2A64A631-32EE-4E6B-AB73-F229A479D5A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitHub.Platform.Workout.API.Tests", "test\FitHub.Platform.Workout.API.Tests\FitHub.Platform.Workout.API.Tests.csproj", "{D8E7B2B4-E87E-4B3F-8C27-D52321B0DA8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.API.Tests", "test\FitHub.Platform.Workout.API.Tests\FitHub.Platform.Workout.API.Tests.csproj", "{D8E7B2B4-E87E-4B3F-8C27-D52321B0DA8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitHub.Platform.Workout.Service.Tests", "test\FitHub.Platform.Workout.Service.Tests\FitHub.Platform.Workout.Service.Tests.csproj", "{0211A9F8-8C7A-4F50-9BE2-5BB6BE4B9E5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.Service.Tests", "test\FitHub.Platform.Workout.Service.Tests\FitHub.Platform.Workout.Service.Tests.csproj", "{0211A9F8-8C7A-4F50-9BE2-5BB6BE4B9E5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitHub.Platform.Workout.Domain.Tests", "test\FitHub.Platform.Workout.Domain.Tests\FitHub.Platform.Workout.Domain.Tests.csproj", "{7B9B4FF6-4248-4D0C-AA15-32CCFD6EA675}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.Repository.Tests", "test\FitHub.Platform.Workout.Repository.Tests\FitHub.Platform.Workout.Repository.Tests.csproj", "{30222FF1-D3EE-4608-BACD-6B148FEEFE09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitHub.Platform.Workout.Repository.Tests", "test\FitHub.Platform.Workout.Repository.Tests\FitHub.Platform.Workout.Repository.Tests.csproj", "{30222FF1-D3EE-4608-BACD-6B148FEEFE09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fithub.Platform.Workout.Domain.Tests", "test\Fithub.Platform.Workout.Domain.Tests\Fithub.Platform.Workout.Domain.Tests.csproj", "{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,14 +81,14 @@ Global
 		{0211A9F8-8C7A-4F50-9BE2-5BB6BE4B9E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0211A9F8-8C7A-4F50-9BE2-5BB6BE4B9E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0211A9F8-8C7A-4F50-9BE2-5BB6BE4B9E5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B9B4FF6-4248-4D0C-AA15-32CCFD6EA675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B9B4FF6-4248-4D0C-AA15-32CCFD6EA675}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B9B4FF6-4248-4D0C-AA15-32CCFD6EA675}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B9B4FF6-4248-4D0C-AA15-32CCFD6EA675}.Release|Any CPU.Build.0 = Release|Any CPU
 		{30222FF1-D3EE-4608-BACD-6B148FEEFE09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{30222FF1-D3EE-4608-BACD-6B148FEEFE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30222FF1-D3EE-4608-BACD-6B148FEEFE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30222FF1-D3EE-4608-BACD-6B148FEEFE09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,8 +106,8 @@ Global
 		{2A64A631-32EE-4E6B-AB73-F229A479D5A1} = {85EDDB72-FFAC-431B-83D6-A8ABC5C1779F}
 		{D8E7B2B4-E87E-4B3F-8C27-D52321B0DA8F} = {B0487829-2B64-4903-A1E6-7BC42B191098}
 		{0211A9F8-8C7A-4F50-9BE2-5BB6BE4B9E5F} = {B0487829-2B64-4903-A1E6-7BC42B191098}
-		{7B9B4FF6-4248-4D0C-AA15-32CCFD6EA675} = {B0487829-2B64-4903-A1E6-7BC42B191098}
 		{30222FF1-D3EE-4608-BACD-6B148FEEFE09} = {B0487829-2B64-4903-A1E6-7BC42B191098}
+		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B} = {B0487829-2B64-4903-A1E6-7BC42B191098}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3EFD86AA-DCD6-4E50-B964-050D1F371A05}
