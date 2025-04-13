@@ -20,7 +20,7 @@ jobs:
           cache: true
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore --verbosity detailed
 
       - name: Build project
         run: dotnet build --configuration Release --no-restore
