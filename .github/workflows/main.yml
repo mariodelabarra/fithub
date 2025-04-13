@@ -19,10 +19,11 @@ jobs:
           dotnet-version: 8.0.x  # Change to your project version
 
       - name: Restore dependencies
-        run: dotnet restore --verbosity detailed
+        run: dotnet restore
 
       - name: Build project
         run: dotnet build --configuration Release --no-restore
 
       - name: Testing with the dotnet CLI
-        run: dotnet test --no-build
+        run: |
+          dotnet test .
