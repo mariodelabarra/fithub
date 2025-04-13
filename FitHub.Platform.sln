@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.Repository.Tests", "test\FitHub.Platform.Workout.Repository.Tests\FitHub.Platform.Workout.Repository.Tests.csproj", "{30222FF1-D3EE-4608-BACD-6B148FEEFE09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fithub.Platform.Workout.Domain.Tests", "test\Fithub.Platform.Workout.Domain.Tests\Fithub.Platform.Workout.Domain.Tests.csproj", "{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitHub.Platform.Workout.Domain.Tests", "test\FitHub.Platform.Workout.Domain.Tests\FitHub.Platform.Workout.Domain.Tests.csproj", "{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
