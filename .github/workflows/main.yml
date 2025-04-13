@@ -17,9 +17,13 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x  # Change to your project version
+          cache: true
 
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build project
         run: dotnet build --configuration Release --no-restore
+
+      - name: Testing with the dotnet CLI
+        run: dotnet test --no-build
