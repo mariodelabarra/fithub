@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FitHub.Platform.Workout.API\FitHub.Platform.Workout.API.csproj" />
+    <ProjectReference Include="..\FitHub.Platform.Workout.Domain.Tests\FitHub.Platform.Workout.Domain.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,6 +9,13 @@ namespace FitHub.Platform.Common.Repository
     public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     {
         /// <summary>
+        /// TODO: Add description
+        /// </summary>
+        /// <param name="requestIn"></param>
+        /// <returns></returns>
+        Task<PaginatedResult<TEntity>> GetPaginatedAsync(PaginatedRequestIn requestIn, string baseQuery, Func<MySqlDataReader, TEntity> map, Dictionary<string, object>? parameters = null);
+
+        /// <summary>
         /// Retrieves a single record by its <paramref name="id"/>
         /// </summary>
         /// <param name="id"></param>
@@ -51,6 +58,61 @@ namespace FitHub.Platform.Common.Repository
         public BaseRepository(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+
+        public async Task<PaginatedResult<TEntity>> GetPaginatedAsync(PaginatedRequestIn requestIn,
+            string baseQuery,
+            Func<MySqlDataReader, TEntity> map,
+            Dictionary<string, object>? parameters = null)
+        {
+            var items = new List<TEntity>();
+            int totalCount = 0;
+
+            string whereClause = string.IsNullOrWhiteSpace(requestIn.Filter) ? string.Empty : $"WHERE {requestIn.Filter}";
+            string order = string.IsNullOrWhiteSpace(requestIn.OrderBy) ? string.Empty : $"ORDER BY {requestIn.OrderBy}";
+            string limit = requestIn.Top.HasValue ? $"LIMIT {requestIn.Top.Value}" : string.Empty;
+            string offset = requestIn.Skip.HasValue ? $"OFFSET {requestIn.Skip.Value}" : string.Empty;
+
+            string paginatedQuery = $"{baseQuery} {whereClause} {order} {limit} {offset};";
+
+            using var connection = Connection;
+            await connection.OpenAsync();
+
+            using var command = new MySqlCommand(paginatedQuery, connection);
+            if(parameters is not null)
+            {
+                foreach(var kv in parameters)
+                {
+                    command.Parameters.AddWithValue(kv.Key, kv.Value);
+                }
+            }
+
+            using MySqlDataReader reader = command.ExecuteReader();
+            while(await reader.ReadAsync())
+            {
+                items.Add(map(reader));
+            }
+
+            await reader.CloseAsync();
+
+            // Get total count
+            string countQuery = $"SELECT COUNT(*) FROM ({baseQuery} {whereClause} AS CountTable;";
+            using var countCommand = new MySqlCommand(countQuery, connection);
+            if (parameters is not null)
+            {
+                foreach (var kv in parameters)
+                {
+                    command.Parameters.AddWithValue(kv.Key, kv.Value);
+                }
+            }
+
+            totalCount = Convert.ToInt32(await countCommand.ExecuteScalarAsync());
+
+            return new PaginatedResult<TEntity>
+            {
+                Items = items,
+                TotalCount = totalCount
+            };
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

@@ -27,7 +27,7 @@ namespace FitHub.Platform.Workout.API
 
             // Add services to the container.
             var modelBuilder = new ODataConventionModelBuilder();
-            modelBuilder.EntitySet<Exercise>("exercises").EntityType.HasKey(c => c.ID);
+            modelBuilder.EntitySet<Exercise>("exercises").EntityType.HasKey(c => c.Id);
             services.AddControllers()
                 .AddOData(
                 opt =>
