@@ -1,4 +1,5 @@
-﻿using FitHub.Platform.Workout.Domain;
+﻿using FitHub.Platform.Common.Domain;
+using FitHub.Platform.Workout.Domain;
 using FitHub.Platform.Workout.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -16,12 +17,32 @@ namespace FitHub.Platform.Workout.API.Controllers
             _exerciseService = exerciseService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var exercises = await _exerciseService.GetAllAsync();
+        //[HttpGet]
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    var exercises = await _exerciseService.GetAllAsync();
 
-            return Ok(exercises.AsQueryable());
+        //    return Ok(exercises.AsQueryable());
+        //}
+
+        [HttpGet]
+        public async Task<IActionResult> GetPaginated(
+            [FromQuery(Name = "$orderby")] string orderBy,
+            [FromQuery(Name = "$top")] int? top,
+            [FromQuery(Name = "$skip")] int? skip,
+            [FromQuery(Name = "$filter")] string filter)
+        {
+            var paginatedRequest = new PaginatedRequestIn
+            {
+                OrderBy = orderBy,
+                Top = top,
+                Skip = skip,
+                Filter = filter
+            };
+
+            var result = await _exerciseService.GetPaginatedAsync(paginatedRequest);
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

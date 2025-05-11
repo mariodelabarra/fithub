@@ -13,7 +13,14 @@ namespace FitHub.Platform.Common.Repository
         /// </summary>
         /// <param name="requestIn"></param>
         /// <returns></returns>
-        Task<PaginatedResult<TEntity>> GetPaginatedAsync(PaginatedRequestIn requestIn, string baseQuery, Func<MySqlDataReader, TEntity> map, Dictionary<string, object>? parameters = null);
+        Task<PaginatedResult<TEntity>> GetPaginatedAsync(
+            string baseQuery,
+            Func<MySqlDataReader, TEntity> map,
+            string orderBy,
+            int? top,
+            int? skip,
+            string filter,
+            Dictionary<string, object>? parameters);
 
         /// <summary>
         /// Retrieves a single record by its <paramref name="id"/>
@@ -60,18 +67,22 @@ namespace FitHub.Platform.Common.Repository
             _configuration = configuration;
         }
 
-        public async Task<PaginatedResult<TEntity>> GetPaginatedAsync(PaginatedRequestIn requestIn,
+        public async Task<PaginatedResult<TEntity>> GetPaginatedAsync(
             string baseQuery,
             Func<MySqlDataReader, TEntity> map,
+            string orderBy = null,
+            int? top = null,
+            int? skip = null,
+            string filter = null,
             Dictionary<string, object>? parameters = null)
         {
             var items = new List<TEntity>();
             int totalCount = 0;
 
-            string whereClause = string.IsNullOrWhiteSpace(requestIn.Filter) ? string.Empty : $"WHERE {requestIn.Filter}";
-            string order = string.IsNullOrWhiteSpace(requestIn.OrderBy) ? string.Empty : $"ORDER BY {requestIn.OrderBy}";
-            string limit = requestIn.Top.HasValue ? $"LIMIT {requestIn.Top.Value}" : string.Empty;
-            string offset = requestIn.Skip.HasValue ? $"OFFSET {requestIn.Skip.Value}" : string.Empty;
+            string whereClause = string.IsNullOrWhiteSpace(filter) ? string.Empty : $"WHERE {filter}";
+            string order = string.IsNullOrWhiteSpace(orderBy) ? string.Empty : $"ORDER BY {orderBy}";
+            string limit = top.HasValue ? $"LIMIT {top.Value}" : string.Empty;
+            string offset = skip.HasValue ? $"OFFSET {skip.Value}" : string.Empty;
 
             string paginatedQuery = $"{baseQuery} {whereClause} {order} {limit} {offset};";
 
@@ -96,7 +107,7 @@ namespace FitHub.Platform.Common.Repository
             await reader.CloseAsync();
 
             // Get total count
-            string countQuery = $"SELECT COUNT(*) FROM ({baseQuery} {whereClause} AS CountTable;";
+            string countQuery = $"SELECT COUNT(*) FROM ({baseQuery} {whereClause}) AS CountTable;";
             using var countCommand = new MySqlCommand(countQuery, connection);
             if (parameters is not null)
             {
