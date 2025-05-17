@@ -74,7 +74,7 @@ namespace FitHub.Platform.Workout.API
 
         public static void RegisterRepositories(IServiceCollection services)
         {
-            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            //services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
             DapperTypeHandlerInitializer.RegisterHandlers();

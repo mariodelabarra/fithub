@@ -57,15 +57,19 @@ namespace FitHub.Platform.Common.Repository
         Task<int> DeleteAsync(int id);
     }
 
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly IConfiguration _configuration;
         private MySqlConnection Connection => new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+        protected abstract string TableName { get; set; }
+        protected static string DatabaseName = "fithub";
         
         public BaseRepository(IConfiguration configuration)
         {
             _configuration = configuration;
         }
+        protected string TableReference => $"{DatabaseName}.{TableName}";
 
         public async Task<PaginatedResult<TEntity>> GetPaginatedAsync(
             string baseQuery,
