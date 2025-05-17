@@ -9,6 +9,20 @@ namespace FitHub.Platform.Common.Repository
     public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     {
         /// <summary>
+        /// TODO: Add description
+        /// </summary>
+        /// <param name="requestIn"></param>
+        /// <returns></returns>
+        Task<PaginatedResult<TEntity>> GetPaginatedAsync(
+            string baseQuery,
+            Func<MySqlDataReader, TEntity> map,
+            string orderBy,
+            int? top,
+            int? skip,
+            string filter,
+            Dictionary<string, object>? parameters);
+
+        /// <summary>
         /// Retrieves a single record by its <paramref name="id"/>
         /// </summary>
         /// <param name="id"></param>
@@ -43,14 +57,77 @@ namespace FitHub.Platform.Common.Repository
         Task<int> DeleteAsync(int id);
     }
 
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly IConfiguration _configuration;
         private MySqlConnection Connection => new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+        protected abstract string TableName { get; set; }
+        protected static string DatabaseName = "fithub";
         
         public BaseRepository(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+        protected string TableReference => $"{DatabaseName}.{TableName}";
+
+        public async Task<PaginatedResult<TEntity>> GetPaginatedAsync(
+            string baseQuery,
+            Func<MySqlDataReader, TEntity> map,
+            string orderBy = null,
+            int? top = null,
+            int? skip = null,
+            string filter = null,
+            Dictionary<string, object>? parameters = null)
+        {
+            var items = new List<TEntity>();
+            int totalCount = 0;
+
+            string whereClause = string.IsNullOrWhiteSpace(filter) ? string.Empty : $"WHERE {filter}";
+            string order = string.IsNullOrWhiteSpace(orderBy) ? string.Empty : $"ORDER BY {orderBy}";
+            string limit = top.HasValue ? $"LIMIT {top.Value}" : string.Empty;
+            string offset = skip.HasValue ? $"OFFSET {skip.Value}" : string.Empty;
+
+            string paginatedQuery = $"{baseQuery} {whereClause} {order} {limit} {offset};";
+
+            using var connection = Connection;
+            await connection.OpenAsync();
+
+            using var command = new MySqlCommand(paginatedQuery, connection);
+            if(parameters is not null)
+            {
+                foreach(var kv in parameters)
+                {
+                    command.Parameters.AddWithValue(kv.Key, kv.Value);
+                }
+            }
+
+            using MySqlDataReader reader = command.ExecuteReader();
+            while(await reader.ReadAsync())
+            {
+                items.Add(map(reader));
+            }
+
+            await reader.CloseAsync();
+
+            // Get total count
+            string countQuery = $"SELECT COUNT(*) FROM ({baseQuery} {whereClause}) AS CountTable;";
+            using var countCommand = new MySqlCommand(countQuery, connection);
+            if (parameters is not null)
+            {
+                foreach (var kv in parameters)
+                {
+                    command.Parameters.AddWithValue(kv.Key, kv.Value);
+                }
+            }
+
+            totalCount = Convert.ToInt32(await countCommand.ExecuteScalarAsync());
+
+            return new PaginatedResult<TEntity>
+            {
+                Items = items,
+                TotalCount = totalCount
+            };
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

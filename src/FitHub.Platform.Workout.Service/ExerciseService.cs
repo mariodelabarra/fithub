@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FitHub.Platform.Common.Domain;
 using FitHub.Platform.Common.Exceptions;
 using FitHub.Platform.Common.Service;
 using FitHub.Platform.Workout.Domain;
@@ -8,6 +9,7 @@ namespace FitHub.Platform.Workout.Service
 {
     public interface IExerciseService
     {
+        Task<PaginatedResult<Exercise>> GetPaginatedAsync(PaginatedRequestIn requestIn);
         Task<IEnumerable<Exercise>> GetAllAsync();
         Task<Exercise> GetById(int id);
         Task Create(CreateExerciseIn createExerciseIn);
@@ -28,6 +30,13 @@ namespace FitHub.Platform.Workout.Service
 
             _mapper = mapper;
             _validatorService = validatorService;
+        }
+        
+        public async Task<PaginatedResult<Exercise>> GetPaginatedAsync(PaginatedRequestIn requestIn)
+        {
+            var result = await _exerciseRepository.GetExercisesPaginatedAsync(requestIn.OrderBy, requestIn.Top, requestIn.Skip, requestIn.Filter);
+
+            return result;
         }
 
         public async Task<IEnumerable<Exercise>> GetAllAsync()
