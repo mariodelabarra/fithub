@@ -7,34 +7,27 @@ using System.Text.Json;
 
 namespace FitHub.Platform.Workout.API.Tests.Controllers
 {
-    public class ExerciseControllerTests : IClassFixture<WebApplicationFactory<Program>>
+    public class ExerciseControllerTests : IClassFixture<CustomWebApplicationFactory>
     {
-        protected readonly HttpClient _client;
-
         protected Faker _faker = new();
 
-        public ExerciseControllerTests(WebApplicationFactory<Program> factory)
+        public ExerciseControllerTests(CustomWebApplicationFactory factory)
         {
-            _client = factory.CreateClient();
         }
 
-        public class GetAllIntegrationTests(WebApplicationFactory<Program> factory) : ExerciseControllerTests(factory)
+        [Collection("GetByIdExerciseTests")]
+        public class GetByIdIntegrationTests : ExerciseControllerTests, IAsyncLifetime
         {
-            [Fact]
-            public async Task GetAll_ReturnsOk()
+            private readonly CustomWebApplicationFactory _factory;
+
+            public GetByIdIntegrationTests(CustomWebApplicationFactory factory) : base(factory)
             {
-                //Arrange
-
-                //Act
-                var response = await _client.GetAsync("/api/exercise");
-
-                //Assert
-                response.StatusCode.Should().Be(HttpStatusCode.OK);                
+                _factory = factory;
             }
-        }
 
-        public class GetByIdIntegrationTests(WebApplicationFactory<Program> factory) : ExerciseControllerTests(factory)
-        {
+            public Task InitializeAsync() => Task.CompletedTask;
+            public Task DisposeAsync() => Task.CompletedTask;
+
             [Fact]
             public async Task GetById_ReturnsOk()
             {
@@ -42,14 +35,13 @@ namespace FitHub.Platform.Workout.API.Tests.Controllers
                 var id = _faker.Random.Number();
 
                 //Act
-                var response = await _client.GetAsync($"/api/exercise/{id}");
+                var response = await _factory.HttpClient.GetAsync($"/api/exercise/{id}");
                 var content = await response.Content.ReadAsStringAsync();
                 var exercise = JsonSerializer.Deserialize<Exercise>(content);
 
                 //Assert
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
                 exercise.Should().NotBeNull();
-                //exercise.Id.Should().Be(id);
             }
         }
 

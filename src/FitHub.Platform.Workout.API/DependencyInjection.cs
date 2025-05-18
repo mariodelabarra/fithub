@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using FitHub.Platform.Common.Repository;
 using FitHub.Platform.Common.Service;
 using FitHub.Platform.Workout.Domain;
@@ -9,6 +9,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.ModelBuilder;
 
 namespace FitHub.Platform.Workout.API

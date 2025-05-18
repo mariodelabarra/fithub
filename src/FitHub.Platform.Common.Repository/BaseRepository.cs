@@ -2,6 +2,7 @@
 using FitHub.Platform.Common.Domain;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 using System.Data;
 
 namespace FitHub.Platform.Common.Repository
@@ -64,7 +65,7 @@ namespace FitHub.Platform.Common.Repository
 
         protected abstract string TableName { get; set; }
         protected static string DatabaseName = "fithub";
-        
+
         public BaseRepository(IConfiguration configuration)
         {
             _configuration = configuration;
