@@ -17,14 +17,6 @@ namespace FitHub.Platform.Workout.API.Controllers
             _exerciseService = exerciseService;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAll()
-        //{
-        //    var exercises = await _exerciseService.GetAllAsync();
-
-        //    return Ok(exercises.AsQueryable());
-        //}
-
         [HttpGet]
         public async Task<IActionResult> GetPaginated(
             [FromQuery(Name = "$orderby")] string orderBy,
