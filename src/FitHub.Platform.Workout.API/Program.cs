@@ -9,6 +9,18 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
+// Configura CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 DependencyInjection.ConfigureDependencies(builder.Services, builder.Configuration);
 
 var app = builder.Build();
@@ -19,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAll"); // ?? Esto debe ir ANTES
 
 // Problem Details
 app.UseExceptionHandler();
