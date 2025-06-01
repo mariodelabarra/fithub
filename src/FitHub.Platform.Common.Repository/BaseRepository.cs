@@ -143,7 +143,7 @@ namespace FitHub.Platform.Common.Repository
         public async Task<TEntity?> GetByIdAsync(int id)
         {
             using var connection = Connection;
-            connection.Open();
+            await connection.OpenAsync();
 
             var query = $"SELECT * FROM {typeof(TEntity).Name}s WHERE Id = @Id";
             return await connection.QuerySingleOrDefaultAsync<TEntity>(query, new { Id = id });

@@ -74,7 +74,7 @@ namespace FitHub.Platform.Workout.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{exerciseId}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _exerciseService.Delete(id);

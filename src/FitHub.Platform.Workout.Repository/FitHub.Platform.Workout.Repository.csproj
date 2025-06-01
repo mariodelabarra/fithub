@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentMigrator" Version="7.1.0" />
+    <PackageReference Include="FluentMigrator.Runner.Core" Version="7.1.0" />
+    <PackageReference Include="FluentMigrator.Runner.MySql" Version="7.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FitHub.Platform.Common.Repository\FitHub.Platform.Common.Repository.csproj" />
     <ProjectReference Include="..\FitHub.Platform.Workout.Domain\FitHub.Platform.Workout.Domain.csproj" />
   </ItemGroup>
