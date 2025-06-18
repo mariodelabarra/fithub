@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
-using Respawn;
 using Testcontainers.MySql;
 
 namespace FitHub.Platform.Workout.API.Tests
@@ -16,7 +15,6 @@ namespace FitHub.Platform.Workout.API.Tests
         private MySqlContainer _dbContainer;
 
         public HttpClient HttpClient { get; private set; } = null!;
-        public Respawner RespawnerInstance;
 
         public string GetConnectionString() => _dbContainer.GetConnectionString();
 
@@ -63,11 +61,6 @@ namespace FitHub.Platform.Workout.API.Tests
 
             await using var connection = new MySqlConnection(GetConnectionString());
             await connection.OpenAsync();
-            _respawner = await Respawner.CreateAsync(connection, new RespawnerOptions
-            {
-                SchemasToInclude = ["public"],
-                DbAdapter = DbAdapter.MySql
-            });
 
             await Task.Delay(2000);
 

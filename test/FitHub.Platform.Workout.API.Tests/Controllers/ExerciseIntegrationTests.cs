@@ -3,7 +3,6 @@ using Dapper;
 using FitHub.Platform.Workout.Domain;
 using FluentAssertions;
 using MySql.Data.MySqlClient;
-using Respawn;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -24,7 +23,6 @@ namespace FitHub.Platform.Workout.API.Tests.Controllers
         {
             await using var connection = new MySqlConnection(_factory.GetConnectionString());
             await connection.OpenAsync();
-            await _factory.RespawnerInstance.ResetAsync(connection);
         }
 
         [Collection("GetByIdExerciseTests")]
