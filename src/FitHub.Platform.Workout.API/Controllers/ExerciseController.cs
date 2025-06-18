@@ -17,14 +17,6 @@ namespace FitHub.Platform.Workout.API.Controllers
             _exerciseService = exerciseService;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAll()
-        //{
-        //    var exercises = await _exerciseService.GetAllAsync();
-
-        //    return Ok(exercises.AsQueryable());
-        //}
-
         [HttpGet]
         public async Task<IActionResult> GetPaginated(
             [FromQuery(Name = "$orderby")] string orderBy,
@@ -45,16 +37,21 @@ namespace FitHub.Platform.Workout.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
+            if(id <= 0)
+            {
+                return BadRequest("Exercise ID must be greater than 0");
+            }
+
             var exercise = await _exerciseService.GetById(id);
 
             return Ok(exercise);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateExerciseIn createExerciseIn)
+        public async Task<IActionResult> Create([FromBody] CreateExerciseIn createExerciseIn)
         {
             await _exerciseService.Create(createExerciseIn);
 
