@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MySql.Data.MySqlClient;
 using Testcontainers.MySql;
 
 namespace FitHub.Platform.Workout.API.Tests
@@ -57,6 +58,9 @@ namespace FitHub.Platform.Workout.API.Tests
 
             await _dbContainer.StartAsync();
             HttpClient = CreateClient();
+
+            await using var connection = new MySqlConnection(GetConnectionString());
+            await connection.OpenAsync();
 
             await Task.Delay(2000);
 

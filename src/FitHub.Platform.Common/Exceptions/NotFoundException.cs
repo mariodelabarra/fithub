@@ -4,7 +4,7 @@ namespace FitHub.Platform.Common.Exceptions
 {
     public class NotFoundException : Exception
     {
-        private static readonly string DefaultMessage = "The item with ID {id} was not found.";
+        private static readonly string DefaultMessage = "The item with ID {0} was not found.";
         public HttpStatusCode StatusCode { get; }
 
         public NotFoundException(string entityId)

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using FitHub.Platform.Common.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ namespace FitHub.Platform.Common
             int status = exception switch
             {
                 ArgumentException => StatusCodes.Status400BadRequest,
+                NotFoundException => StatusCodes.Status404NotFound,
                 ValidationException => StatusCodes.Status422UnprocessableEntity,
                 _ => StatusCodes.Status500InternalServerError
             };
