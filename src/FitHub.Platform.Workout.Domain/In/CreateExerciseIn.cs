@@ -2,7 +2,7 @@
 
 namespace FitHub.Platform.Workout.Domain
 {
-    public class CreateExerciseIn
+    public record CreateExerciseIn
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -20,9 +20,6 @@ namespace FitHub.Platform.Workout.Domain
             RuleFor(exercise => exercise.Description)
                 .NotEmpty()
                 .MinimumLength(15);
-
-            RuleFor(exercise => exercise.Type)
-                .NotEqual(ExerciseType.None);
 
             RuleFor(exercise => exercise.MuscleGroups)
                 .NotEmpty();

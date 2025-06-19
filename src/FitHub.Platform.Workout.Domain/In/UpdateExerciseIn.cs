@@ -2,7 +2,7 @@
 
 namespace FitHub.Platform.Workout.Domain
 {
-    public class UpdateExerciseIn
+    public record UpdateExerciseIn
     {
         public string Description { get; set; } = string.Empty;
         public ExerciseType Type { get; set; } = ExerciseType.None;
@@ -26,15 +26,6 @@ namespace FitHub.Platform.Workout.Domain
 
             RuleFor(exercise => exercise.Type)
                 .NotEqual(ExerciseType.None);
-
-            RuleFor(exercise => exercise.MuscleGroups)
-                .NotEmpty();
-
-            RuleFor(exercise => exercise.Sets)
-                .NotEmpty();
-
-            RuleFor(exercise => exercise.Reps)
-                .NotEmpty();
 
             RuleFor(exercise => exercise.DurationOfRest)
                 .GreaterThan(0);

@@ -14,9 +14,19 @@ namespace FitHub.Platform.Workout.API.Tests.Controllers
         protected readonly CustomWebApplicationFactory _factory;
         protected Faker _faker = new();
 
+        protected readonly Faker<Exercise> _exerciseFaker;
+
         public ExerciseControllerTests(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+
+            _exerciseFaker = new Faker<Exercise>()
+                .RuleFor(prop => prop.Name, faker => faker.Name.JobTitle())
+                .RuleFor(prop => prop.Description, faker => faker.Name.JobDescriptor())
+                .RuleFor(prop => prop.CreatedOn, faker => faker.Date.Recent())
+                .RuleFor(prop => prop.Type, faker => faker.PickRandom<ExerciseType>())
+                .RuleFor(prop => prop.DifficultyLevel, faker => faker.PickRandom<DifficultyLevel>())
+                .RuleFor(prop => prop.Instructions, faker => faker.Random.String());
         }
 
         protected async Task ResetDatabase()
@@ -28,17 +38,8 @@ namespace FitHub.Platform.Workout.API.Tests.Controllers
         [Collection("GetByIdExerciseTests")]
         public class GetByIdIntegrationTests  : ExerciseControllerTests
         {
-            private readonly Faker<Exercise> _exerciseFaker;
-
             public GetByIdIntegrationTests(CustomWebApplicationFactory factory) : base(factory)
             {
-                _exerciseFaker = new Faker<Exercise>()
-                    .RuleFor(prop => prop.Name, faker => faker.Name.JobTitle())
-                    .RuleFor(prop => prop.Description, faker => faker.Name.JobDescriptor())
-                    .RuleFor(prop => prop.CreatedOn, faker => faker.Date.Recent())
-                    .RuleFor(prop => prop.Type, faker => faker.PickRandom<ExerciseType>())
-                    .RuleFor(prop => prop.DifficultyLevel, faker => faker.PickRandom<DifficultyLevel>())
-                    .RuleFor(prop => prop.Instructions, faker => faker.Random.String());
             }
 
             [Fact]
@@ -71,7 +72,6 @@ namespace FitHub.Platform.Workout.API.Tests.Controllers
 
                 //Act
                 var response = await _factory.HttpClient.GetAsync($"/api/exercise/{nonExistingId}");
-                var content = await response.Content.ReadAsStringAsync();
 
                 //Assert
                 response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -133,42 +133,85 @@ namespace FitHub.Platform.Workout.API.Tests.Controllers
 
             public CreateIntegrationTests(CustomWebApplicationFactory factory) : base(factory)
             {
-                _exerciseFaker = new Faker<Exercise>()
-                    .RuleFor(prop => prop.Name, faker => faker.Name.JobTitle())
-                    .RuleFor(prop => prop.Description, faker => faker.Random.String(15))
-                    .RuleFor(prop => prop.Type, faker => faker.PickRandom<ExerciseType>())
-                    .RuleFor(prop => prop.DifficultyLevel, faker => faker.PickRandom<DifficultyLevel>())
-                    .RuleFor(prop => prop.MuscleGroups, faker => Enumerable.Range(0, faker.Random.Int(1,3)).Select(_ => faker.Random.Enum<MuscleGroup>()).ToArray());
             }
 
             [Fact]
             public async Task Create_ShouldSucceed()
             {
                 //Arrange
-                await ResetDatabase();
                 Exercise newExercise = _exerciseFaker.Generate();
                 var content = new StringContent(JsonSerializer.Serialize(newExercise), encoding: Encoding.UTF8, "application/json");
 
                 //Act
                 var response = await _factory.HttpClient.PostAsync($"api/exercise/", content);
-                var responseContent = await response.Content.ReadAsStringAsync();
 
                 //Assert
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
             }
 
+            [Theory]
+            [InlineData("")]
+            [InlineData("Example Desc")]
+            public async Task Create_ShouldFail_WithInvalid_Input(string description)
+            {
+                //Arrage
+                Exercise newExercise = _exerciseFaker.Generate();
+                newExercise.Description = description;
+                var content = new StringContent(JsonSerializer.Serialize(newExercise), encoding: Encoding.UTF8, "application/json");
+
+                //Act
+                var response = await _factory.HttpClient.PostAsync($"api/exercise/", content);
+
+                response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+            }
+
         }
 
         [Collection("UpdateIntegrationTests")]
-        public class UpdateIntegrationTests
+        public class UpdateIntegrationTests : ExerciseControllerTests
         {
+            public UpdateIntegrationTests(CustomWebApplicationFactory factory) : base(factory)
+            {
+            }
 
+            [Fact]
+            public async Task Update_ShouldSucceed()
+            {
+                //Arrage
+                Exercise newExercise = _exerciseFaker.Generate();
+            }
+
+            [Fact]
+            public async Task Update_ShouldFail_WithInvalid_Input()
+            {
+
+            }
+
+            [Fact]
+            public async Task Update_ShouldFail_WithNoExistingEntity()
+            {
+
+            }
         }
 
         [Collection("DeleteIntegrationTests")]
-        public class DeleteIntegrationTests
+        public class DeleteIntegrationTests : ExerciseControllerTests
         {
+            public DeleteIntegrationTests(CustomWebApplicationFactory factory) : base(factory)
+            {
+            }
 
+            [Fact]
+            public async Task Delete_ShouldSucceed()
+            {
+
+            }
+
+            [Fact]
+            public async Task Delete_ShouldFail_WithNoExistingEntity()
+            {
+
+            }
         }
     }
 }
