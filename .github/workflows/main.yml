@@ -34,7 +34,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Testing with the dotnet CLI
-        run: dotnet test ./Products.Api.sln --no-build
+        run: dotnet test .\FitHub.Platform.sln --no-build
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
