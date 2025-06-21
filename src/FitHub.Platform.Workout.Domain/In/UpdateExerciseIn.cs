@@ -12,7 +12,6 @@ namespace FitHub.Platform.Workout.Domain
         public int[] Reps { get; set; } = Array.Empty<int>();
         public string Instructions { get; set; } = string.Empty;
         public string Categories { get; set; } = string.Empty;
-        public int DurationOfRest { get; set; }
         public string Notes { get; set; } = string.Empty;
     }
 
@@ -26,9 +25,6 @@ namespace FitHub.Platform.Workout.Domain
 
             RuleFor(exercise => exercise.Type)
                 .NotEqual(ExerciseType.None);
-
-            RuleFor(exercise => exercise.DurationOfRest)
-                .GreaterThan(0);
         }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MySql.Data.MySqlClient;
 using Testcontainers.MySql;
 
 namespace FitHub.Platform.Workout.API.Tests
@@ -18,13 +17,45 @@ namespace FitHub.Platform.Workout.API.Tests
 
         public string GetConnectionString() => _dbContainer.GetConnectionString();
 
+        public async Task InitializeAsync()
+        {
+            _dbContainer = new MySqlBuilder()
+                .WithImage("mysql:8.0")
+                .WithDatabase("test")
+                .WithUsername("admin")
+                .WithPassword("admin")
+                .WithCleanUp(true)
+                .WithReuse(true)
+                .WithPortBinding(3306, true) // Let Docker assign a random port
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(3306))
+                .Build();
+
+            await _dbContainer.StartAsync();
+            HttpClient = CreateClient();
+
+            MigrateDatabase();
+        }
+
+        private void MigrateDatabase()
+        {
+            var serviceProvider = new ServiceCollection()
+                .AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb.AddMySql()
+                    .WithGlobalConnectionString(_dbContainer.GetConnectionString())
+                    .ScanIn(typeof(CreateExerciseTable).Assembly).For.Migrations())
+                .BuildServiceProvider();
+
+            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+            runner.MigrateUp();
+        }
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
             {
                 var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IConfiguration));
 
-                if(descriptor is not null)
+                if (descriptor is not null)
                 {
                     services.Remove(descriptor);
                 }
@@ -41,43 +72,6 @@ namespace FitHub.Platform.Workout.API.Tests
                 services.AddSingleton<IConfiguration>(config);
             });
             builder.UseEnvironment("Testing");
-        }
-
-        public async Task InitializeAsync()
-        {
-            _dbContainer = new MySqlBuilder()
-                .WithImage("mysql:latest")
-                .WithDatabase("test")
-                .WithUsername("admin")
-                .WithPassword("admin")
-                .WithCleanUp(true)
-                .WithReuse(true)
-                .WithPortBinding(3306, true) // Let Docker assign a random port
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(3306))
-                .Build();
-
-            await _dbContainer.StartAsync();
-            HttpClient = CreateClient();
-
-            await using var connection = new MySqlConnection(GetConnectionString());
-            await connection.OpenAsync();
-
-            await Task.Delay(2000);
-
-            MigrateDatabase();
-        }
-
-        private void MigrateDatabase()
-        {
-            var serviceProvider = new ServiceCollection()
-                .AddFluentMigratorCore()
-                .ConfigureRunner(rb => rb.AddMySql()
-                    .WithGlobalConnectionString(_dbContainer.GetConnectionString())
-                    .ScanIn(typeof(CreateExerciseTable).Assembly).For.Migrations())
-                .BuildServiceProvider();
-
-            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-            runner.MigrateUp();
         }
 
         public new async Task DisposeAsync()

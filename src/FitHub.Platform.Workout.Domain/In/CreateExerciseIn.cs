@@ -20,9 +20,6 @@ namespace FitHub.Platform.Workout.Domain
             RuleFor(exercise => exercise.Description)
                 .NotEmpty()
                 .MinimumLength(15);
-
-            RuleFor(exercise => exercise.MuscleGroups)
-                .NotEmpty();
         }
     }
 }
