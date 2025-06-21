@@ -39,10 +39,4 @@ The **FitHub** platform implements several key architectural patterns:
 2. **Domain-Driven Design**: Focus on core domain models and business logic  
 3. **Repository Pattern**: Abstraction of data access through repository interfaces  
 4. **Dependency Injection**: Loose coupling between components  
-5. **Validation Pipeline**: Structured input validation using Fluent Validation  
-
-For more detailed information about specific components, refer to:
-
-- [API Layer](#) for API design and endpoints  
-- [Service Layer](#) for business logic implementation  
-- [Data Access Layer](#) for persistence details  
+5. **Validation Pipeline**: Structured input validation using Fluent Validation
