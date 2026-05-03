@@ -12,14 +12,17 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 // Configura CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
+    options.AddPolicy("AngularApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
 });
+
+builder.Services.AddAuthorization();
+builder.Services.AddHttpClient();
 
 DependencyInjection.ConfigureDependencies(builder.Services, builder.Configuration);
 
@@ -32,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll"); // ?? Esto debe ir ANTES
+app.UseCors("AngularApp");
 
 // Problem Details
 app.UseExceptionHandler();
@@ -40,6 +43,7 @@ app.UseStatusCodePages();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

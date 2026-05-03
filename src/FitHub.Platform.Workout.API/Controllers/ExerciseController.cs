@@ -19,10 +19,10 @@ namespace FitHub.Platform.Workout.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetPaginated(
-            [FromQuery(Name = "$orderby")] string orderBy,
-            [FromQuery(Name = "$top")] int? top,
-            [FromQuery(Name = "$skip")] int? skip,
-            [FromQuery(Name = "$filter")] string filter)
+            [FromQuery(Name = "orderby")] string orderBy,
+            [FromQuery(Name = "top")] int? top,
+            [FromQuery(Name = "skip")] int? skip,
+            [FromQuery(Name = "filter")] string filter)
         {
             var paginatedRequest = new PaginatedRequestIn
             {
