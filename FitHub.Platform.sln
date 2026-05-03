@@ -35,6 +35,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitHub.Platform.Workout.Rep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitHub.Platform.Workout.Domain.Tests", "test\FitHub.Platform.Workout.Domain.Tests\FitHub.Platform.Workout.Domain.Tests.csproj", "{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agglestone", "Agglestone", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C193AA25-4BE8-44C4-9720-AC99776C95CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ECCDFD72-A4E5-47D8-9A95-046BDC72DCC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fithub.Platform.Agglestone.Domain", "src\Fithub.Platform.Agglestone.Domain\Fithub.Platform.Agglestone.Domain.csproj", "{B5C9FD9A-BFE5-4A84-B32A-4BF67D342F78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fithub.Platform.Agglestone.Service", "src\Fithub.Platform.Agglestone.Service\Fithub.Platform.Agglestone.Service.csproj", "{16A4FB13-7587-4E10-9D30-A2E9EC208BE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +99,14 @@ Global
 		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5C9FD9A-BFE5-4A84-B32A-4BF67D342F78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5C9FD9A-BFE5-4A84-B32A-4BF67D342F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5C9FD9A-BFE5-4A84-B32A-4BF67D342F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5C9FD9A-BFE5-4A84-B32A-4BF67D342F78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16A4FB13-7587-4E10-9D30-A2E9EC208BE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16A4FB13-7587-4E10-9D30-A2E9EC208BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16A4FB13-7587-4E10-9D30-A2E9EC208BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16A4FB13-7587-4E10-9D30-A2E9EC208BE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +126,10 @@ Global
 		{0211A9F8-8C7A-4F50-9BE2-5BB6BE4B9E5F} = {B0487829-2B64-4903-A1E6-7BC42B191098}
 		{30222FF1-D3EE-4608-BACD-6B148FEEFE09} = {B0487829-2B64-4903-A1E6-7BC42B191098}
 		{412F6C13-CB48-4E77-AD1B-98D2E0929F1B} = {B0487829-2B64-4903-A1E6-7BC42B191098}
+		{C193AA25-4BE8-44C4-9720-AC99776C95CD} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{ECCDFD72-A4E5-47D8-9A95-046BDC72DCC5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B5C9FD9A-BFE5-4A84-B32A-4BF67D342F78} = {ECCDFD72-A4E5-47D8-9A95-046BDC72DCC5}
+		{16A4FB13-7587-4E10-9D30-A2E9EC208BE7} = {ECCDFD72-A4E5-47D8-9A95-046BDC72DCC5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3EFD86AA-DCD6-4E50-B964-050D1F371A05}
