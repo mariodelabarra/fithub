@@ -19,19 +19,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET 10
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x  # Change to your project version
-      
+          dotnet-version: 10.0.x
+
       - name: Clean solution
-        run: dotnet clean
+        run: dotnet clean FitHub.Platform.slnx
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore FitHub.Platform.slnx
 
       - name: Build project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build FitHub.Platform.slnx --configuration Release --no-restore
 
       - name: Testing with the dotnet CLI
         run: dotnet test ./test/FitHub.Platform.Workout.Service.Tests/FitHub.Platform.Workout.Service.Tests.csproj --configuration Release --no-build

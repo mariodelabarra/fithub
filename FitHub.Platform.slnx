@@ -1,0 +1,28 @@
+<Solution>
+  <Folder Name="/Agglestone/" />
+  <Folder Name="/Agglestone/src/">
+    <Project Path="src/Fithub.Platform.Agglestone.API/Fithub.Platform.Agglestone.API.csproj" />
+    <Project Path="src/Fithub.Platform.Agglestone.Domain/Fithub.Platform.Agglestone.Domain.csproj" />
+    <Project Path="src/Fithub.Platform.Agglestone.Service/Fithub.Platform.Agglestone.Service.csproj" />
+  </Folder>
+  <Folder Name="/Agglestone/test/" />
+  <Folder Name="/Workout/" />
+  <Folder Name="/Workout/src/">
+    <Project Path="src/FitHub.Platform.Workout.API/FitHub.Platform.Workout.API.csproj" />
+    <Project Path="src/FitHub.Platform.Workout.Domain/FitHub.Platform.Workout.Domain.csproj" />
+    <Project Path="src/FitHub.Platform.Workout.Repository/FitHub.Platform.Workout.Repository.csproj" />
+    <Project Path="src/FitHub.Platform.Workout.Service/FitHub.Platform.Workout.Service.csproj" />
+  </Folder>
+  <Folder Name="/Workout/test/">
+    <Project Path="test/FitHub.Platform.Workout.API.Tests/FitHub.Platform.Workout.API.Tests.csproj" />
+    <Project Path="test/FitHub.Platform.Workout.Domain.Tests/FitHub.Platform.Workout.Domain.Tests.csproj" />
+    <Project Path="test/FitHub.Platform.Workout.Repository.Tests/FitHub.Platform.Workout.Repository.Tests.csproj" />
+    <Project Path="test/FitHub.Platform.Workout.Service.Tests/FitHub.Platform.Workout.Service.Tests.csproj" />
+  </Folder>
+  <Folder Name="/_common/">
+    <Project Path="src/FitHub.Platform.Common.Domain/FitHub.Platform.Common.Domain.csproj" />
+    <Project Path="src/FitHub.Platform.Common.Repository/FitHub.Platform.Common.Repository.csproj" />
+    <Project Path="src/FitHub.Platform.Common.Service/FitHub.Platform.Common.Service.csproj" />
+    <Project Path="src/FitHub.Platform.Common/FitHub.Platform.Common.csproj" />
+  </Folder>
+</Solution>

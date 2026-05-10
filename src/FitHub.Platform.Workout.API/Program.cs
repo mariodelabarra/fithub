@@ -22,7 +22,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAuthorization();
-builder.Services.AddHttpClient();
 
 DependencyInjection.ConfigureDependencies(builder.Services, builder.Configuration);
 

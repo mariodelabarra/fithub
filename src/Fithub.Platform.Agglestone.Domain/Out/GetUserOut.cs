@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 
-namespace FitHub.Platform.Workout.Domain.Out
+namespace Fithub.Platform.Agglestone.Domain.Out
 {
-    public record GetUserOut(bool IsAuthenticated, UserDetailsOut User);
+    public record GetUserOut(bool IsAuthenticated, UserDetailsOut? User);
 
     public record UserDetailsOut(string Name,
         string Email,
