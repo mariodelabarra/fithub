@@ -11,11 +11,11 @@ namespace FitHub.Platform.Workout.API.Tests
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
-        private MySqlContainer _dbContainer;
+        private MySqlContainer? _dbContainer;
 
         public HttpClient HttpClient { get; private set; } = null!;
 
-        public string GetConnectionString() => _dbContainer.GetConnectionString();
+        public string GetConnectionString() => _dbContainer!.GetConnectionString();
 
         public async Task InitializeAsync()
         {
@@ -41,7 +41,7 @@ namespace FitHub.Platform.Workout.API.Tests
             var serviceProvider = new ServiceCollection()
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb.AddMySql()
-                    .WithGlobalConnectionString(_dbContainer.GetConnectionString())
+                    .WithGlobalConnectionString(_dbContainer!.GetConnectionString())
                     .ScanIn(typeof(CreateExerciseTable).Assembly).For.Migrations())
                 .BuildServiceProvider();
 
@@ -62,7 +62,7 @@ namespace FitHub.Platform.Workout.API.Tests
 
                 var configData = new Dictionary<string, string?>
                 {
-                    ["ConnectionStrings:DefaultConnection"] = _dbContainer.GetConnectionString() ?? "Server=localhost;Database=testdb;Uid=testuser;Pwd=testpass;"
+                    ["ConnectionStrings:DefaultConnection"] = _dbContainer!.GetConnectionString() ?? "Server=localhost;Database=testdb;Uid=testuser;Pwd=testpass;"
                 };
 
                 var config = new ConfigurationBuilder()

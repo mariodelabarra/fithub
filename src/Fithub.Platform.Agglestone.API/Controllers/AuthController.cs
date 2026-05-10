@@ -1,43 +1,32 @@
-﻿using FitHub.Platform.Workout.Domain.Out;
+using Fithub.Platform.Agglestone.Domain.Out;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace FitHub.Platform.Workout.API.Controllers
+namespace Fithub.Platform.Agglestone.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController() : ControllerBase
     {
-
         [HttpGet("login")]
         public IActionResult Login([FromQuery] string? returnUrl = null)
         {
-            // After authentication, redirect back to Angular app
             var redirectUri = "http://localhost:4200";
             if (!string.IsNullOrEmpty(returnUrl))
-            {
                 redirectUri = $"http://localhost:4200{returnUrl}";
-            }
 
-            var properties = new AuthenticationProperties
-            {
-                RedirectUri = redirectUri
-            };
-
+            var properties = new AuthenticationProperties { RedirectUri = redirectUri };
             return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         [HttpGet("logout")]
         public IActionResult Logout()
         {
-            var properties = new AuthenticationProperties
-            {
-                RedirectUri = "http://localhost:4200"
-            };
-
+            var properties = new AuthenticationProperties { RedirectUri = "http://localhost:4200" };
             return SignOut(properties,
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 OpenIdConnectDefaults.AuthenticationScheme);
@@ -46,36 +35,35 @@ namespace FitHub.Platform.Workout.API.Controllers
         [HttpGet("user")]
         public ActionResult<GetUserOut> GetUser()
         {
-            if(!User.Identity?.IsAuthenticated ?? false)
-            {
-                return Ok(new { isAuthenticated = false });
-            }
+            if (User.Identity?.IsAuthenticated != true)
+                return Ok(new GetUserOut(false, null));
 
             var claims = User.Claims.Select(c => new ClaimsOut(c.Type, c.Value));
 
-            var userDetailsOut = new UserDetailsOut
-            (
-                User.Identity?.Name!,
+            var userDetails = new UserDetailsOut(
+                User.Identity.Name!,
                 User.FindFirst("email")?.Value!,
                 User.FindFirst(ClaimTypes.NameIdentifier)?.Value!,
-                claims
-            );
+                claims);
 
-            return Ok(new GetUserOut(true, userDetailsOut));
+            return Ok(new GetUserOut(true, userDetails));
+        }
+
+        [HttpGet("token")]
+        [Authorize]
+        public async Task<IActionResult> GetToken()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            if (string.IsNullOrEmpty(accessToken))
+                return Unauthorized(new { error = "No access token in session" });
+
+            return Ok(new { access_token = accessToken });
         }
 
         [HttpGet("callback")]
-        public IActionResult Callback()
-        {
-            // OpenID Connect middleware handles this automatically
-            // Just redirect to Angular app
-            return Redirect("http://localhost:4200");
-        }
+        public IActionResult Callback() => Redirect("http://localhost:4200");
 
         [HttpGet("signout-callback")]
-        public IActionResult SignoutCallback()
-        {
-            return Redirect("http://localhost:4200");
-        }
+        public IActionResult SignoutCallback() => Redirect("http://localhost:4200");
     }
 }

@@ -1,14 +1,15 @@
 ﻿using FitHub.Platform.Common.Domain;
 using FitHub.Platform.Workout.Domain;
 using FitHub.Platform.Workout.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace FitHub.Platform.Workout.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExerciseController : ODataController
+    [Authorize]
+    public class ExerciseController : ControllerBase
     {
         private readonly IExerciseService _exerciseService;
 
