@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FitHub.Platform.Common.Service\FitHub.Platform.Common.Service.csproj" />
+    <ProjectReference Include="..\FitHub.Platform.Common\FitHub.Platform.Common.csproj" />
+    <ProjectReference Include="..\Fithub.Platform.Domain\Fithub.Platform.Domain.csproj" />
+    <ProjectReference Include="..\Fithub.Platform.Repositories\Fithub.Platform.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>
