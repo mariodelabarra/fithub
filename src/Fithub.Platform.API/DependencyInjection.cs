@@ -77,7 +77,7 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<FithubDbContext>(options =>
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+            options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 0))));
 
         // Problem Details
         services.AddProblemDetails();

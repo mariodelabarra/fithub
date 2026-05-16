@@ -1,7 +1,9 @@
-﻿using Bogus;
-using Dapper;
-using FitHub.Platform.Workout.Domain;
-using MySql.Data.MySqlClient;
+using Bogus;
+using Fithub.Platform.Domain.Workout;
+using Fithub.Platform.Domain.Workout.Enums;
+using Fithub.Platform.Domain.Workout.In;
+using Fithub.Platform.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 using System.Text.Json;
 
@@ -11,67 +13,60 @@ namespace Fithub.Platform.API.Tests.Workout.Exercise
     public class ExerciseControllerUpdateTests
     {
         protected readonly CustomWebApplicationFactory _factory;
-        protected readonly Faker<Exercise> _exerciseFaker;
-        protected Faker _faker = new();
+        protected readonly Faker<Fithub.Platform.Domain.Workout.Exercise> _exerciseFaker;
+        protected readonly Faker _faker = new();
 
         public ExerciseControllerUpdateTests(CustomWebApplicationFactory factory)
         {
             _factory = factory;
-            _exerciseFaker = new Faker<Exercise>()
+            _exerciseFaker = new Faker<Fithub.Platform.Domain.Workout.Exercise>()
                 .RuleFor(prop => prop.Name, faker => faker.Name.JobTitle())
                 .RuleFor(prop => prop.Description, faker => faker.Random.String(15))
                 .RuleFor(prop => prop.CreatedOn, faker => faker.Date.Recent())
-                .RuleFor(prop => prop.Type, faker => faker.PickRandom<ExerciseType>())
-                .RuleFor(prop => prop.DifficultyLevel, faker => faker.PickRandom<DifficultyLevel>())
-                .RuleFor(prop => prop.Instructions, faker => faker.Random.String());
+                .RuleFor(prop => prop.Type, faker => faker.PickRandom(ExerciseType.Cardio, ExerciseType.Strength, ExerciseType.Flexibility, ExerciseType.Balance))
+                .RuleFor(prop => prop.DifficultyLevel, faker => faker.PickRandom(DifficultyLevel.Beginner, DifficultyLevel.Intermediate, DifficultyLevel.Advanced))
+                .RuleFor(prop => prop.Instructions, faker => faker.Lorem.Sentence());
         }
 
         [Fact]
         public async Task Update_ShouldSucceed()
         {
-            //Arrage
-            Exercise newExercise = _exerciseFaker.Generate();
-            var id = await CreatingExercise(newExercise);
-            var content = new StringContent(JsonSerializer.Serialize(newExercise), encoding: Encoding.UTF8, "application/json");
+            //Arrange
+            var exercise = _exerciseFaker.Generate();
+            var id = await SeedExercise(exercise);
+
+            var updatePayload = new UpdateExerciseIn
+            {
+                Description = _faker.Random.String(15),
+                Type = ExerciseType.Cardio,
+                Instructions = _faker.Lorem.Sentence()
+            };
+            var content = new StringContent(JsonSerializer.Serialize(updatePayload), Encoding.UTF8, "application/json");
 
             //Act
             var response = await _factory.HttpClient.PutAsync($"api/exercise/{id}", content);
-            var contenta = await response.Content.ReadAsStringAsync();
 
-            //Act
+            //Assert
             response.EnsureSuccessStatusCode();
         }
 
         [Fact]
         public async Task Update_ShouldFail_WithInvalid_Input()
         {
-
         }
 
         [Fact]
         public async Task Update_ShouldFail_WithNoExistingEntity()
         {
-
         }
 
-        private async Task<int> CreatingExercise(Exercise exercise)
+        private async Task<Guid> SeedExercise(Fithub.Platform.Domain.Workout.Exercise exercise)
         {
-            await using var connection = new MySqlConnection(_factory.GetConnectionString());
-            await connection.OpenAsync();
-
-            var sql = @"
-                    INSERT INTO Exercises (Name, Description, CreatedOn)
-                    VALUES (@Name, @Description, @CreatedOn);
-                    SELECT LAST_INSERT_ID();";
-
-            var id = await connection.ExecuteScalarAsync<int>(sql, new
-            {
-                exercise.Name,
-                exercise.Description,
-                exercise.CreatedOn
-            });
-
-            return id;
+            using var scope = _factory.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<FithubDbContext>();
+            context.Exercises.Add(exercise);
+            await context.SaveChangesAsync();
+            return exercise.Id;
         }
     }
 }

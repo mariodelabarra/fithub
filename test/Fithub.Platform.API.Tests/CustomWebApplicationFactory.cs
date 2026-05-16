@@ -1,8 +1,8 @@
-﻿using DotNet.Testcontainers.Builders;
-using FluentMigrator.Runner;
+using DotNet.Testcontainers.Builders;
+using Fithub.Platform.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.MySql;
 
@@ -25,50 +25,29 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
             .WithPassword("admin")
             .WithCleanUp(true)
             .WithReuse(true)
-            .WithPortBinding(3306, true) // Let Docker assign a random port
+            .WithPortBinding(3306, true)
             .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(3306))
             .Build();
 
         await _dbContainer.StartAsync();
         HttpClient = CreateClient();
 
-        MigrateDatabase();
-    }
-
-    private void MigrateDatabase()
-    {
-        var serviceProvider = new ServiceCollection()
-            .AddFluentMigratorCore()
-            .ConfigureRunner(rb => rb.AddMySql()
-                .WithGlobalConnectionString(_dbContainer!.GetConnectionString())
-                .ScanIn(typeof(CreateExerciseTable).Assembly).For.Migrations())
-            .BuildServiceProvider();
-
-        var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-        runner.MigrateUp();
+        using var scope = Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<FithubDbContext>();
+        await context.Database.EnsureCreatedAsync();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
         {
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IConfiguration));
-
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<FithubDbContext>));
             if (descriptor is not null)
-            {
                 services.Remove(descriptor);
-            }
 
-            var configData = new Dictionary<string, string?>
-            {
-                ["ConnectionStrings:DefaultConnection"] = _dbContainer!.GetConnectionString() ?? "Server=localhost;Database=testdb;Uid=testuser;Pwd=testpass;"
-            };
-
-            var config = new ConfigurationBuilder()
-                .AddInMemoryCollection(configData)
-                .Build();
-
-            services.AddSingleton<IConfiguration>(config);
+            var connectionString = _dbContainer!.GetConnectionString();
+            services.AddDbContext<FithubDbContext>(options =>
+                options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 0))));
         });
         builder.UseEnvironment("Testing");
     }
