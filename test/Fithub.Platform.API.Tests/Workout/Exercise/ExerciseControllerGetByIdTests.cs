@@ -13,12 +13,12 @@ namespace Fithub.Platform.API.Tests.Workout.Exercise
     public class ExerciseControllerGetByIdTests
     {
         protected readonly CustomWebApplicationFactory _factory;
-        protected readonly Faker<Fithub.Platform.Domain.Workout.Exercise> _exerciseFaker;
+        protected readonly Faker<Domain.Workout.Exercise> _exerciseFaker;
 
         public ExerciseControllerGetByIdTests(CustomWebApplicationFactory factory)
         {
             _factory = factory;
-            _exerciseFaker = new Faker<Fithub.Platform.Domain.Workout.Exercise>()
+            _exerciseFaker = new Faker<Domain.Workout.Exercise>()
                 .RuleFor(prop => prop.Name, faker => faker.Name.JobTitle())
                 .RuleFor(prop => prop.Description, faker => faker.Random.String(15))
                 .RuleFor(prop => prop.CreatedOn, faker => faker.Date.Recent())
@@ -37,7 +37,7 @@ namespace Fithub.Platform.API.Tests.Workout.Exercise
             //Act
             var response = await _factory.HttpClient.GetAsync($"/api/exercise/{id}");
             var content = await response.Content.ReadAsStringAsync();
-            var exercise = JsonSerializer.Deserialize<Fithub.Platform.Domain.Workout.Exercise>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var exercise = JsonSerializer.Deserialize<Domain.Workout.Exercise>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -70,7 +70,7 @@ namespace Fithub.Platform.API.Tests.Workout.Exercise
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        private async Task<Guid> SeedExercise(Fithub.Platform.Domain.Workout.Exercise exercise)
+        private async Task<Guid> SeedExercise(Domain.Workout.Exercise exercise)
         {
             using var scope = _factory.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<FithubDbContext>();

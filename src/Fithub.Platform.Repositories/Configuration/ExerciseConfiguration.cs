@@ -1,6 +1,4 @@
-using System.Text.Json;
 using Fithub.Platform.Domain.Workout;
-using Fithub.Platform.Domain.Workout.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -27,8 +25,11 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
         builder.Property(e => e.Instructions)
             .HasMaxLength(2000);
 
-        builder.Property(e => e.Categories)
-            .HasMaxLength(1000);
+        builder.Property(e => e.VideoUrl)
+            .HasMaxLength(512);
+
+        builder.Property(e => e.CreatedByUserId)
+            .HasMaxLength(256);
 
         builder.Property(e => e.Type)
             .HasConversion<int>();
@@ -36,14 +37,26 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
         builder.Property(e => e.DifficultyLevel)
             .HasConversion<int>();
 
-        builder.Property(e => e.MuscleGroups)
-            .HasColumnType("json")
-            .HasConversion(
-                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-                v => JsonSerializer.Deserialize<MuscleGroup[]>(v, (JsonSerializerOptions?)null) ?? Array.Empty<MuscleGroup>()
-            );
+        builder.Property(e => e.IsPublic)
+            .IsRequired()
+            .HasDefaultValue(true);
 
         builder.Property(e => e.CreatedOn).IsRequired();
         builder.Property(e => e.ModifiedOn);
+
+        builder.HasMany(e => e.MuscleGroups)
+            .WithOne(m => m.Exercise)
+            .HasForeignKey(m => m.ExerciseId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(e => e.Categories)
+            .WithOne(c => c.Exercise)
+            .HasForeignKey(c => c.ExerciseId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(e => e.Equipment)
+            .WithOne(eq => eq.Exercise)
+            .HasForeignKey(eq => eq.ExerciseId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -5,8 +5,7 @@ namespace Fithub.Platform.Domain.Workout.Enums;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum DifficultyLevel
 {
-    None,
-    Beginner,
-    Intermediate,
-    Advanced
+    Beginner = 1,
+    Intermediate = 2,
+    Advanced = 3
 }

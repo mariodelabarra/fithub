@@ -24,8 +24,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
             .WithUsername("admin")
             .WithPassword("admin")
             .WithCleanUp(true)
-            .WithReuse(true)
-            .WithPortBinding(3306, true)
             .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(3306))
             .Build();
 
@@ -34,7 +32,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
 
         using var scope = Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<FithubDbContext>();
-        await context.Database.EnsureCreatedAsync();
+        await context.Database.MigrateAsync();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)

@@ -1,5 +1,6 @@
 using FitHub.Platform.API;
 using FitHub.Platform.Common;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,12 @@ builder.Services.AddAuthorization();
 DependencyInjection.ConfigureDependencies(builder.Services, builder.Configuration);
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<Fithub.Platform.Repositories.FithubDbContext>();
+    await db.Database.MigrateAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
