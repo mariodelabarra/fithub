@@ -1,30 +1,30 @@
-﻿using FluentValidation;
 using Fithub.Platform.Domain.Workout.Enums;
+using FluentValidation;
 
 namespace Fithub.Platform.Domain.Workout.In;
 
 public record UpdateExerciseIn
 {
     public string Description { get; set; } = string.Empty;
-    public ExerciseType Type { get; set; } = ExerciseType.None;
-    public MuscleGroup[] MuscleGroups { get; set; } = Array.Empty<MuscleGroup>();
+    public ExerciseType Type { get; set; } = ExerciseType.Strength;
     public DifficultyLevel DifficultyLevel { get; set; } = DifficultyLevel.Beginner;
-    public int[] Sets { get; set; } = Array.Empty<int>();
-    public int[] Reps { get; set; } = Array.Empty<int>();
     public string Instructions { get; set; } = string.Empty;
-    public string Categories { get; set; } = string.Empty;
-    public string Notes { get; set; } = string.Empty;
+    public string? VideoUrl { get; set; }
+    public bool IsPublic { get; set; } = true;
+    public List<MuscleGroupIn> MuscleGroups { get; set; } = [];
+    public List<Guid> CategoryIds { get; set; } = [];
+    public List<Guid> EquipmentIds { get; set; } = [];
 }
 
 public class UpdateExerciseInValidator : AbstractValidator<UpdateExerciseIn>
 {
     public UpdateExerciseInValidator()
-    {   
-        RuleFor(exercise => exercise.Description)
+    {
+        RuleFor(e => e.Description)
             .NotEmpty()
             .MinimumLength(15);
 
-        RuleFor(exercise => exercise.Type)
-            .NotEqual(ExerciseType.None);
+        RuleFor(e => e.Type).IsInEnum();
+        RuleFor(e => e.DifficultyLevel).IsInEnum();
     }
 }

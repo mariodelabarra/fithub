@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Fithub.Platform.Domain.Workout;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -16,21 +15,25 @@ public class WorkoutExerciseConfiguration : IEntityTypeConfiguration<WorkoutExer
             .HasColumnType("char(36)")
             .ValueGeneratedOnAdd();
 
-        builder.Property(e => e.Sets)
-            .HasColumnType("json")
-            .HasConversion(
-                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-                v => JsonSerializer.Deserialize<int[]>(v, (JsonSerializerOptions?)null) ?? Array.Empty<int>()
-            );
-
-        builder.Property(e => e.Reps)
-            .HasColumnType("json")
-            .HasConversion(
-                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-                v => JsonSerializer.Deserialize<int[]>(v, (JsonSerializerOptions?)null) ?? Array.Empty<int>()
-            );
+        builder.Property(e => e.Notes)
+            .HasMaxLength(1000);
 
         builder.Property(e => e.CreatedOn).IsRequired();
         builder.Property(e => e.ModifiedOn);
+
+        builder.HasOne(e => e.WorkoutDay)
+            .WithMany(d => d.Exercises)
+            .HasForeignKey(e => e.WorkoutDayId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(e => e.Exercise)
+            .WithMany()
+            .HasForeignKey(e => e.ExerciseId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(e => e.Sets)
+            .WithOne(s => s.WorkoutExercise)
+            .HasForeignKey(s => s.WorkoutExerciseId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -28,7 +28,7 @@ public static class DependencyInjection
     public static void RegisterAuthentication(IServiceCollection services, ConfigurationManager configuration)
     {
         var tenantId = configuration["Agglestone:Auth:TenantId"];
-        var authority = $"https://auth.agglestone.com/tenant/{tenantId}/v2/auth";
+        var authority = $"https://auth.agglestone.com/tenant/{tenantId}/v2/Auth";
 
         services.AddAuthentication(options =>
         {
@@ -40,7 +40,7 @@ public static class DependencyInjection
             options.Cookie.Name = "AggleStone.Auth";
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            options.Cookie.SameSite = SameSiteMode.Strict;
+            options.Cookie.SameSite = SameSiteMode.Lax;
             options.ExpireTimeSpan = TimeSpan.FromHours(1);
             options.SlidingExpiration = true;
         })
@@ -51,7 +51,7 @@ public static class DependencyInjection
             // NO ClientSecret for public client with PKCE
             options.ResponseType = "code";
             options.UsePkce = true;
-            options.ResponseMode = "form_post";
+            options.ResponseMode = "query";
 
             options.Scope.Clear();
             options.Scope.Add("openid");
