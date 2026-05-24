@@ -2,6 +2,7 @@
 using Fithub.Platform.Domain.Workout.In;
 using Fithub.Platform.Repositories;
 using Fithub.Platform.Repositories.Workout;
+using Fithub.Platform.Services.Agglestone;
 using Fithub.Platform.Services.Mapping;
 using Fithub.Platform.Services.Workout;
 using FitHub.Platform.Common.Service;
@@ -22,7 +23,7 @@ public static class DependencyInjection
         RegisterAuthentication(services, configuration);
         RegisterConfiguration(services, configuration);
         RegisterServices(services);
-        RegisterRepositories(services, configuration);
+        RegisterRepositories(services);
     }
 
     public static void RegisterAuthentication(IServiceCollection services, ConfigurationManager configuration)
@@ -79,6 +80,17 @@ public static class DependencyInjection
         services.AddDbContext<FithubDbContext>(options =>
             options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 0))));
 
+        // Agglestone
+        services.Configure<AgglestoneSettings>(configuration.GetSection(AgglestoneSettings.SectionName));
+        services.AddMemoryCache();
+        services.AddHttpClient("agglestone", client =>
+        {
+            client.BaseAddress = new Uri("https://auth.agglestone.com/");
+            var apiKey = configuration["Agglestone:ApiKey"];
+            if (!string.IsNullOrEmpty(apiKey))
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+        });
+
         // Problem Details
         services.AddProblemDetails();
 
@@ -109,12 +121,13 @@ public static class DependencyInjection
 
         //Services
         services.AddScoped<IExerciseService, ExerciseService>();
+        services.AddScoped<IAgglestoneUserService, AgglestoneUserService>();
 
         //Validators
         services.AddTransient<IValidatorService, ValidatorService>();
     }
 
-    public static void RegisterRepositories(IServiceCollection services, ConfigurationManager configuration)
+    public static void RegisterRepositories(IServiceCollection services)
     {
         services.AddScoped<IExerciseRepository, ExerciseRepository>();
     }

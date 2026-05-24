@@ -3,33 +3,25 @@
 # Overview
 The Fithub is a comprehensive application designed to help users achieve their fitness goals by providing personalized workout routines and meal plans. Whether you're looking to build muscle, lose weight, or maintain a healthy lifestyle, this app simplifies planning and tracking your progress.
 
-## Core Modules
+## Projects
 
-### Workout Module
+### Platform Projects
 
-The **Workout module** forms the core of the current FitHub implementation, providing comprehensive workout and exercise management capabilities.
+| Layer      | Project                               | Purpose                                         |
+|------------|---------------------------------------|-------------------------------------------------|
+| API        | `Fithub.Platform.API`                 | REST endpoints for all platform operations      |
+| Service    | `Fithub.Platform.Services`            | Business logic and orchestration                |
+| Domain     | `Fithub.Platform.Domain`              | Core domain entities, DTOs, and validators      |
+| Repository | `Fithub.Platform.Repositories`        | EF Core DbContext, entity configurations, and migrations |
 
-**Key components include:**
+### Common (Shared) Projects
 
-| Layer      | Component                               | Purpose                                         |
-|------------|-----------------------------------------|-------------------------------------------------|
-| API        | `FitHub.Platform.Workout.API`           | REST endpoints for workout-related operations   |
-| Service    | `FitHub.Platform.Workout.Service`       | Business logic and orchestration               |
-| Domain     | `FitHub.Platform.Workout.Domain`        | Core domain entities and business rules        |
-| Repository | `FitHub.Platform.Workout.Repository`    | Data access and persistence                    |
-
----
-
-## Common Components
-
-FitHub utilizes shared components across modules to promote code reuse and maintainability:
-
-| Component                                  | Purpose                                         |
-|--------------------------------------------|-------------------------------------------------|
-| `FitHub.Platform.Common`                   | Core shared utilities and helpers               |
-| `FitHub.Platform.Common.Domain`            | Shared domain abstractions                     |
-| `FitHub.Platform.Common.Service`           | Shared service-layer components                |
-| `FitHub.Platform.Common.Repository`        | Shared data access patterns                    |
+| Project                             | Purpose                                         |
+|-------------------------------------|-------------------------------------------------|
+| `FitHub.Platform.Common`            | Global exception handler and shared middleware  |
+| `FitHub.Platform.Common.Domain`     | `BaseEntity` and shared domain abstractions     |
+| `FitHub.Platform.Common.Service`    | `IValidatorService` / `ValidatorService` wrapping FluentValidation |
+| `FitHub.Platform.Common.Repository` | `BaseRepository<T>` generic CRUD via Dapper     |
 
 ## Key Architecture Patterns
 
