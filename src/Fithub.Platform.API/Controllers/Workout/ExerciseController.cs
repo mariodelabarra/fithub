@@ -30,6 +30,10 @@ public class ExerciseController : ControllerBase
     }
 
     [HttpPost]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Create([FromBody] CreateExerciseIn createExerciseIn)
     {
         await _exerciseService.Create(createExerciseIn);
