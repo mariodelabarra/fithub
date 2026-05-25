@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Fithub.Platform.Domain\Fithub.Platform.Domain.csproj" />
     <ProjectReference Include="..\FitHub.Platform.Common.Domain\FitHub.Platform.Common.Domain.csproj" />
+    <ProjectReference Include="..\FitHub.Platform.Common.Repository\FitHub.Platform.Common.Repository.csproj" />
   </ItemGroup>
 
 </Project>

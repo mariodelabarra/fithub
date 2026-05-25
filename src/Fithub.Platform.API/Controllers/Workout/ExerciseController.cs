@@ -1,5 +1,6 @@
 using Fithub.Platform.Domain.Workout.In;
 using Fithub.Platform.Services.Workout;
+using FitHub.Platform.Common.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fithub.Platform.API.Controllers.Workout;
@@ -16,10 +17,10 @@ public class ExerciseController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetPaged([FromQuery] PageRequest pageRequest)
     {
-        var exercises = await _exerciseService.GetAllAsync();
-        return Ok(exercises);
+        var result = await _exerciseService.GetPagedAsync(pageRequest);
+        return Ok(result);
     }
 
     [HttpGet("{id:guid}")]
